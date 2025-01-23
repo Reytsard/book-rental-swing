@@ -4,6 +4,6 @@ import server.controller.ServerController;
 
 public class ServerMain {
     public static void main(String[] args) {
-        new ServerController();
+        new Thread(new ServerController()).run();
     }
 }

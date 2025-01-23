@@ -21,10 +21,6 @@ public class ServerController implements Runnable {
     BooksDatabase booksDatabase;
     ServerView serverView;
 
-    public ServerController() {
-
-    }
-
     @Override
     public void run() {
         ServerSocket serverSocket = null;
@@ -257,6 +253,17 @@ public class ServerController implements Runnable {
                 throw new RuntimeException(ex);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            } finally {
+                try{
+                    if(objectInputStream != null){
+                        objectInputStream.close();
+                    }
+                    if(objectOutputStream != null){
+                        objectOutputStream.close();
+                    }
+                }catch (IOException e){
+                    throw new RuntimeException();
+                }
             }
         }
     }
