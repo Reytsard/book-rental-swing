@@ -74,6 +74,16 @@ public class BooksDatabase {
         writeBooksToXML(books);
     }
 
+    public synchronized void edit(Book book){
+        for (int i = 0; i < books.size(); i++) {
+            if(books.get(i).getId() == book.getId()){
+                books.set(i,book);
+                writeBooksToXML(books);
+            }
+
+        }
+    }
+
     public synchronized Book match(String title) {
         for (int i = 0; i < books.size(); i++) {
             if (books.get(i).getTitle().equals(title) ) {
@@ -83,15 +93,17 @@ public class BooksDatabase {
         return new Book();
     }
 
-    public synchronized boolean exists(String title){
+    public synchronized boolean exists(Book book){
         boolean exists = false;
         for (int i = 0; i < books.size(); i++) {
-            if (books.get(i).getTitle().equals(title)) {
+            if (books.get(i).getTitle().equals(book.getTitle())) {
                 exists = true;
             }
         }
         return exists;
     }
+
+
 
     private synchronized void createElement(Document doc, Element parent, String tagName, String textContent) {
         Element elem = doc.createElement(tagName);
@@ -130,6 +142,16 @@ public class BooksDatabase {
             transformer.transform(domSource, streamResult);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void delete(Book toRemoveBook) {
+        for (int i = 0; i < books.size(); i++) {
+            if(books.get(i).getId() == toRemoveBook.getId()){
+                books.remove(i);
+                writeBooksToXML(books);
+                break;
+            }
         }
     }
 }
